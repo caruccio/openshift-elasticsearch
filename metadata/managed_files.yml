@@ -1,0 +1,19 @@
+---
+locked_files:
+- bin/
+- bin/*
+- env/*
+- hooks/
+- hooks/*
+- metadata/
+- metadata/*
+- usr/
+- usr/*
+- versions/
+- versions/*
+processed_templates:
+- '**/*.erb'
+setup_rewritten:
+- lib
+- elasticsearch
+- elasticsearch/*

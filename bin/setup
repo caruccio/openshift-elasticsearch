@@ -1,0 +1,18 @@
+#!/bin/bash -eu
+
+case "$1" in
+	-v|--version)
+		version="$2"
+esac
+
+# Copy version specific files
+shopt -s dotglob
+
+# extract elasticsearch distribution
+mkdir -p $OPENSHIFT_ES_DIR/elasticsearch
+tar xzf $OPENSHIFT_ES_DIR/versions/$version/elasticsearch-$version.tar.gz --strip-components=1 -C $OPENSHIFT_ES_DIR/elasticsearch/
+cp -Hr $OPENSHIFT_ES_DIR/versions/$version/config/* $OPENSHIFT_ES_DIR/elasticsearch/config
+ln -s $OPENSHIFT_ES_DIR/versions/$version/lib $OPENSHIFT_ES_DIR/lib
+
+# Create additional directories
+mkdir -p $OPENSHIFT_ES_DIR/run $OPENSHIFT_ES_LOG_DIR $OPENSHIFT_DATA_DIR/elasticsearch/{data,work,plugins}

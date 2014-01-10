@@ -1,0 +1,26 @@
+#!/bin/bash
+
+set -e
+
+#app_name=$1
+#namespace=$2
+#local_gear=$3
+
+# find master address
+master=""
+nodes=()
+for arg in ${@:4}; do
+	arg=$(echo "$arg" | tr -d "\n" | tr -d "'")
+	gear=$(echo "$arg" | cut -f 1 -d '=')
+	addr=$(echo "$arg" | cut -f 3 -d '=')
+	if [ ${OPENSHIFT_APP_UUID} == ${gear} ]; then
+		if [ -z ${master} ]; then
+			master=${addr}
+		fi
+	else
+		nodes+=($addr)
+	fi
+done
+
+echo ${master}   > env/OPENSHIFT_ES_NODE_MASTER
+echo ${nodes[*]} > env/OPENSHIFT_ES_NODE_DATA

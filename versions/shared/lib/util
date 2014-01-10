@@ -1,0 +1,30 @@
+#!/bin/bash
+
+function es_install_plugins()
+{
+	local PLUGIN_CMD="$OPENSHIFT_ES_DIR/elasticsearch/bin/plugin"
+
+	old_plugins=$($PLUGIN_CMD --list | awk '/-/{print $2}' | xargs)
+	if [ -n "$old_plugins"  -a "$old_plugins" != "No" ]; then #ARGH!
+		echo "Removing old ElasticSearch plugins..."
+		for plugin in $old_plugins; do
+			$PLUGIN_CMD --remove $plugin
+		done
+	fi
+
+	echo "Installing ElasticSearch plugins..."
+
+	plugins="$(grep -v '^#' $OPENSHIFT_REPO_DIR/plugins.txt 2>/dev/null | xargs)"
+
+	if [ "${plugins}" ]; then
+		for plugin in ${plugins}; do
+			name=$(echo $plugin | cut -f 1 -d =)
+			url=$(echo $plugin | cut -f 2 -d =)
+			if [ "$name" == "$url" ]; then
+				$PLUGIN_CMD --install $name
+			else
+				$PLUGIN_CMD --url $url --install $name
+			fi
+		done
+	fi
+}
