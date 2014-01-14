@@ -6,6 +6,7 @@ set -e
 #namespace=$2
 #local_gear=$3
 
+echo "$@" >> $OPENSHIFT_DATA_DIR/log
 # find main node addr
 for arg in ${@:4}; do
 	arg=$(echo "$arg" | tr -d "\n" | tr -d "'")
