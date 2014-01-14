@@ -6,21 +6,14 @@ set -e
 #namespace=$2
 #local_gear=$3
 
-# find master address
-master=""
-nodes=()
+# find main node addr
 for arg in ${@:4}; do
 	arg=$(echo "$arg" | tr -d "\n" | tr -d "'")
 	gear=$(echo "$arg" | cut -f 1 -d '=')
 	addr=$(echo "$arg" | cut -f 3 -d '=')
-	if [ ${OPENSHIFT_APP_UUID} == ${gear} ]; then
-		if [ -z ${master} ]; then
-			master=${addr}
-		fi
-	else
-		nodes+=($addr)
+	if [ ${OPENSHIFT_APP_UUID} == "${gear}" ]; then
+		echo ${addr} > env/OPENSHIFT_ES_MAIN_NODE_ADDR
+		break
 	fi
 done
 
-echo ${master}   > env/OPENSHIFT_ES_NODE_MASTER
-echo ${nodes[*]} > env/OPENSHIFT_ES_NODE_DATA
