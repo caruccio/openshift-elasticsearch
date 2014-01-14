@@ -232,10 +232,11 @@ path.plugins: ${OPENSHIFT_DATA_DIR}/elasticsearch/plugins
 # http.enabled: false
 
 # OpenShift enabled config
-http.host:           ${OPENSHIFT_ES_IP}
-http.port:           ${OPENSHIFT_ES_PORT}
-transport.host:      ${OPENSHIFT_ES_NODE_IP}
-transport.tcp.port:  ${OPENSHIFT_ES_NODE_PORT}
+http.host:              ${OPENSHIFT_ES_IP}
+http.port:              ${OPENSHIFT_ES_PORT}
+transport.publish_host: ${OPENSHIFT_GEAR_DNS}
+transport.bind_host:    ${OPENSHIFT_ES_NODE_IP}
+transport.tcp.port:     ${OPENSHIFT_ES_NODE_PORT}
 
 
 ################################### Gateway ###################################

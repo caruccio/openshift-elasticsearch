@@ -72,5 +72,4 @@ Endpoints:
         Backend:       ""
   - Private-IP-Name:   NODE_IP
     Private-Port-Name: NODE_PORT
-    Private-Port:      9300
     Public-Port-Name:  NODE_PROXY_PORT
